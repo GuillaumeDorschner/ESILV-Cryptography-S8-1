@@ -1,5 +1,5 @@
 <div style="display: flex; justify-content: center; align-items: center; width: 500px; margin: 0 auto;">
-    <img src="https://media.discordapp.net/attachments/1172462760530034742/1172462827223654460/proflie-picture.png?ex=65606819&is=654df319&hm=a9bb53cc225ec8206a5f4ad3639cb442f876483937538577c046de28d95255c7&=" height=100 style="align-self: center;">
+    <img src="https://media.discordapp.net/attachments/1172462760530034742/1172462827223654460/proflie-picture.png?ex=65f41019&is=65e19b19&hm=def5d1bab276edda75e26b2cdf7d69af47da0de0eaac386c595a449dd96819e0&=&format=webp&quality=lossless&width=700&height=700" height=100 style="align-self: center;">
     <img src="https://media.discordapp.net/attachments/1172462760530034742/1215056991190392893/image.png?ex=65fb5d01&is=65e8e801&hm=9bdd484fcc715d50b973f4d8feab28ad0862fa68dc7ff435b1b46e8fa6902900&=&format=webp&quality=lossless&width=920&height=936" height=100 style="align-self: center;">
     <div style="padding: 20px; text-align: center;">
         <h3 style="font-size: 16px;">Project CryptoGraphie</h3>
