@@ -12,7 +12,8 @@ services:
     ports:
       - 5432:5432
 
-  # app:
+  # server:
+  #   image: server-flask
   #   build:
   #     context: .
   #     dockerfile: Dockerfile

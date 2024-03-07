@@ -1,5 +1,4 @@
 import tink
-from tink import daead
 
 
 class AuthManager:
