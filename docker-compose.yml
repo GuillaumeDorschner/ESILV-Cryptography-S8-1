@@ -12,12 +12,12 @@ services:
     ports:
       - 5432:5432
 
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    restart: always
-    ports:
-      - 80:80
-    depends_on:
-      - db
+  # app:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   restart: always
+  #   ports:
+  #     - 80:80
+  #   depends_on:
+  #     - db
