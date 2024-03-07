@@ -1,33 +1,36 @@
-import requests
-from flask import (
-    Blueprint,
-    redirect,
-    render_template,
-    request,
-    session,
-    url_for,
-)
+from flask import flash, redirect, render_template, request, url_for
 
-from .models import User  # Assurez-vous d'avoir une classe User dans models.py
-
-bp = Blueprint("main", _name_)
+from . import app
 
 
-@bp.route("/")
+@app.route("/")
 def index():
-    return render_template("index.html")
+    return "Hello, World!"
+    # return render_template("index.html")
 
 
-@bp.route("/login")
+@app.route("/home")
+def home():
+    return render_template("home.html")
+
+
+@app.route("/signup", methods=["GET", "POST"])
+def signup():
+    # if user auth
+    # if user is not auth
+    return render_template("signup.html")
+
+
+@app.route("/login", methods=["GET", "POST"])
 def login():
+    # if user auth
+    # if user is not auth
     return render_template("login.html")
 
 
-@bp.route("/sign_up")
-def sign_up():
-    return render_template("sign_up.html")
+@app.route("/logout")
+def logout():
+    # logout user
 
-
-@bp.route("/profile")
-def profile():
-    return render_template("profile.html", email=session["email"])
+    # redirect to index
+    return redirect(url_for("/"))
