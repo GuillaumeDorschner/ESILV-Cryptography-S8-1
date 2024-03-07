@@ -24,6 +24,30 @@ All the code is written in Python, and we will be using the following libraries:
 
 ```mermaid
 graph LR
-    A[Google Tink] <--> Server[Flask Backend]
-    Server --> B[Flask Frontend]
+    Front[Flask Frontend] <--> Server
+    Database[Postgres Database] <--> Server
+    Server[Flask Backend] --> Tink[Google Tink]
+```
+
+Example of Sequence Diagram:
+
+1. Sign up
+```mermaid
+sequenceDiagram
+    User->>Server: Hello I want to signup I'm Bob with password "1234"
+    Server-->>Server: Hash the password with salt
+    Server-->>Database: Store: hashed password & salt
+    Server-->>Server: Generate a session token
+    Server-->>Database: Store: session token
+    Server-->>User: Welcome Bob | send the session token
+```
+2. Log in
+```mermaid
+sequenceDiagram
+    User->>Server: Hello, I'm Bob with password "1234"
+    Server-->>Database: Retrieve: hashed password & salt
+    Server-->>Server: Hash the password with  the retrieve salt
+    Server-->>Server: Compare the hashed password with the one in the database
+    Server-->>Database: Generate a session token
+    Server-->>User: Welcome Bob | send the session token
 ```

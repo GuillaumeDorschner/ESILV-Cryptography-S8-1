@@ -1,0 +1,24 @@
+version: '3'
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password1234
+      POSTGRES_DB: main
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+  # server:
+  #   image: server-flask
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   restart: always
+  #   ports:
+  #     - 80:80
+  #   depends_on:
+  #     - db
