@@ -17,12 +17,13 @@ If you are using any cryptographic encryption implementation, you need to use [g
 
 # What we will be using
 
-All the code is written in C++, and we will be using the following libraries:
+All the code is written in Python, and we will be using the following libraries:
 - [Google Tink](https://developers.google.com/tink) for all cryptographic operations.
-- [cpp-httplib](
+- [Flask](https://flask.palletsprojects.com/en/3.0.x/)
+- [PostgreSQL database](https://www.postgresql.org/)
 
 ```mermaid
 graph LR
-    A[Google Tink] <--> Server[Backend]
-    Server --> B[Frontend]
+    A[Google Tink] <--> Server[Flask Backend]
+    Server --> B[Flask Frontend]
 ```
