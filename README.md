@@ -18,14 +18,19 @@ If you are using any cryptographic encryption implementation, you need to use [g
 # What we will be using
 
 All the code is written in Python, and we will be using the following libraries:
-- [Google Tink](https://developers.google.com/tink) for all cryptographic operations.
 - [Flask](https://flask.palletsprojects.com/en/3.0.x/)
 - [PostgreSQL database](https://www.postgresql.org/)
+- [Flask-Session](https://flask-session.readthedocs.io/en/latest/)
+- [Argon2](https://en.wikipedia.org/wiki/Argon2)
+- [Google Tink](https://developers.google.com/tink) for all cryptographic operations.
 
 ```mermaid
 graph LR
     Front[Flask Frontend] <--> Server
     Database[Postgres Database] <--> Server
+    Server[Flask Backend] --> Postgres[PostgreSQL database]
+    Server[Flask Backend] --> Flask-Session[Flask-Session]
+    Server[Flask Backend] --> Argon2[Argon2]
     Server[Flask Backend] --> Tink[Google Tink]
 ```
 
@@ -41,7 +46,7 @@ sequenceDiagram
     Server-->>Database: Store: session token
     Server-->>User: Welcome Bob | send the session token
 ```
-2. Log in
+1. Log in
 ```mermaid
 sequenceDiagram
     User->>Server: Hello, I'm Bob with password "1234"
