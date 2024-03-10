@@ -70,7 +70,6 @@ class AuthManager:
         try:
             hashed_password = self.hash_password(password)
             encrypted_hash = self.encrypt_password(hashed_password)
-            self.db.add_user(email, encrypted_hash)
             user = User(
                 email=email,
                 password=encrypted_hash,
