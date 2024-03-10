@@ -17,7 +17,7 @@ def _init_tink():
         )
         return keyset_handle
     except Exception as e:
-        return None
+        Exception("Error while initializing Tink")
 
 
 class AuthManager:
@@ -27,7 +27,7 @@ class AuthManager:
             self.password_hasher = PasswordHasher()
             self.tink_keyset_handle = _init_tink()
         except Exception as e:
-            pass
+            Exception("Error while initializing AuthManager")
 
     def hash_password(self, password):
         """
@@ -39,7 +39,7 @@ class AuthManager:
         try:
             return self.password_hasher.hash(password)
         except Exception as e:
-            return None
+            Exception("Error while hashing password")
 
     def encrypt_password(self, hashed_password):
         """
@@ -56,7 +56,7 @@ class AuthManager:
             )
             return encrypted_hash
         except Exception as e:
-            return None
+            Exception("Error while encrypting password")
 
     def register(self, email, password):
         """
@@ -80,7 +80,7 @@ class AuthManager:
             print("User added")
             return True
         except Exception as e:
-            return False
+            Exception("Error while registering user")
 
     def decrypt_password(self, encrypted_hash):
         """
@@ -97,8 +97,7 @@ class AuthManager:
             )
             return decrypted_hash.decode()
         except Exception as e:
-            # Handle the exception here
-            return None
+            Exception("Error while decrypting password")
 
     def login(self, email, password):
         """
@@ -124,4 +123,4 @@ class AuthManager:
                     return None
             return None
         except Exception as e:
-            return None
+            Exception("Error while logging in user")
