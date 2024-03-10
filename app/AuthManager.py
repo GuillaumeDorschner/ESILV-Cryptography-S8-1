@@ -6,7 +6,7 @@ from argon2 import PasswordHasher
 from flask_login import login_user
 from tink import daead
 
-from .models import User
+from .models import Users
 
 
 def _init_tink():
@@ -17,7 +17,7 @@ def _init_tink():
         )
         return keyset_handle
     except Exception as e:
-        return None
+        Exception("Error while initializing Tink")
 
 
 class AuthManager:
@@ -27,7 +27,7 @@ class AuthManager:
             self.password_hasher = PasswordHasher()
             self.tink_keyset_handle = _init_tink()
         except Exception as e:
-            pass
+            Exception("Error while initializing AuthManager")
 
     def hash_password(self, password):
         """
@@ -39,7 +39,7 @@ class AuthManager:
         try:
             return self.password_hasher.hash(password)
         except Exception as e:
-            return None
+            Exception("Error while hashing password")
 
     def encrypt_password(self, hashed_password):
         """
@@ -56,7 +56,7 @@ class AuthManager:
             )
             return encrypted_hash
         except Exception as e:
-            return None
+            Exception("Error while encrypting password")
 
     def register(self, email, password):
         """
@@ -70,8 +70,7 @@ class AuthManager:
         try:
             hashed_password = self.hash_password(password)
             encrypted_hash = self.encrypt_password(hashed_password)
-            self.db.add_user(email, encrypted_hash)
-            user = User(
+            user = Users(
                 email=email,
                 password=encrypted_hash,
             )
@@ -80,7 +79,8 @@ class AuthManager:
             print("User added")
             return True
         except Exception as e:
-            return False
+            print(e)
+            Exception("Error while registering user")
 
     def decrypt_password(self, encrypted_hash):
         """
@@ -97,8 +97,7 @@ class AuthManager:
             )
             return decrypted_hash.decode()
         except Exception as e:
-            # Handle the exception here
-            return None
+            Exception("Error while decrypting password")
 
     def login(self, email, password):
         """
@@ -113,7 +112,7 @@ class AuthManager:
             time.sleep(
                 random.randint(1, 9) * 0.01
             )  # sleep against timing attacks and bruteforce
-            user = self.db.query.filter_by(email=email).first()
+            user = self.db.session.query(Users).filter_by(email=email).first()
             if user:
                 decrypted_hash = self.decrypt_password(user.password)
                 if self.password_hasher.verify(decrypted_hash, password):
@@ -124,4 +123,5 @@ class AuthManager:
                     return None
             return None
         except Exception as e:
-            return None
+            print(e)
+            Exception("Error while logging in user")

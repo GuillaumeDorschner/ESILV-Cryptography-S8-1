@@ -1,9 +1,10 @@
 from flask import flash, redirect, render_template, request, url_for
 from flask_login import login_required, login_user, logout_user
 
-from . import app, db
+from . import app
 from .AuthManager import AuthManager
-from .models import User
+from .database import db
+from .models import Users
 
 auth_manager = AuthManager(db)
 
@@ -27,7 +28,7 @@ def signup():
         print(email, password)
         if auth_manager.register(email, password):
             flash("Account created for {}".format(email), "success")
-            return redirect(url_for("login"))
+            return redirect("/home")
         else:
             flash("An error occured", "danger")
     return render_template("signup.html")
@@ -39,10 +40,10 @@ def login():
         email = request.form["email"]
         password = request.form["password"]
         print(email, password)
-        user = User.query.filter_by(email=email).first()
+        user = Users.query.filter_by(email=email).first()
         if user and auth_manager.login(password, user.password):
             login_user(user)
-            return redirect(url_for("home"))
+            return redirect("/home")
         else:
             flash(
                 "Login Unsuccessful. Please check email and password", "danger"
