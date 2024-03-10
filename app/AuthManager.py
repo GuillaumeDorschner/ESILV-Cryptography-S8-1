@@ -6,7 +6,7 @@ from argon2 import PasswordHasher
 from flask_login import login_user
 from tink import daead
 
-from .models import User
+from .models import Users
 
 
 def _init_tink():
@@ -70,7 +70,7 @@ class AuthManager:
         try:
             hashed_password = self.hash_password(password)
             encrypted_hash = self.encrypt_password(hashed_password)
-            user = User(
+            user = Users(
                 email=email,
                 password=encrypted_hash,
             )
@@ -79,6 +79,7 @@ class AuthManager:
             print("User added")
             return True
         except Exception as e:
+            print(e)
             Exception("Error while registering user")
 
     def decrypt_password(self, encrypted_hash):
@@ -111,7 +112,7 @@ class AuthManager:
             time.sleep(
                 random.randint(1, 9) * 0.01
             )  # sleep against timing attacks and bruteforce
-            user = self.db.query.filter_by(email=email).first()
+            user = self.db.session.query(Users).filter_by(email=email).first()
             if user:
                 decrypted_hash = self.decrypt_password(user.password)
                 if self.password_hasher.verify(decrypted_hash, password):
@@ -122,4 +123,5 @@ class AuthManager:
                     return None
             return None
         except Exception as e:
+            print(e)
             Exception("Error while logging in user")
