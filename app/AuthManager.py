@@ -76,10 +76,8 @@ class AuthManager:
             )
             self.db.session.add(user)
             self.db.session.commit()
-            print("User added")
             return True
         except Exception as e:
-            print(e)
             Exception("Error while registering user")
 
     def decrypt_password(self, encrypted_hash):
@@ -97,6 +95,7 @@ class AuthManager:
             )
             return decrypted_hash.decode()
         except Exception as e:
+            print(e)
             Exception("Error while decrypting password")
 
     def login(self, email, password):
@@ -109,19 +108,12 @@ class AuthManager:
             User object on success, None otherwise.
         """
         try:
-            time.sleep(
-                random.randint(1, 9) * 0.01
-            )  # sleep against timing attacks and bruteforce
             user = self.db.session.query(Users).filter_by(email=email).first()
             if user:
                 decrypted_hash = self.decrypt_password(user.password)
                 if self.password_hasher.verify(decrypted_hash, password):
                     login_user(user)
-                    print("User logged in")
                     return user
-                else:
-                    return None
             return None
         except Exception as e:
-            print(e)
-            Exception("Error while logging in user")
+            return None
