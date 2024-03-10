@@ -1,6 +1,11 @@
 from flask import flash, redirect, render_template, request, url_for
+from flask_login import login_required, login_user, logout_user
 
-from . import app
+from . import app, db
+from .AuthManager import AuthManager
+from .models import User
+
+auth_manager = AuthManager(db)
 
 
 @app.route("/")
@@ -9,27 +14,44 @@ def index():
 
 
 @app.route("/home")
+@login_required
 def home():
     return render_template("home.html")
 
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
-    # if user auth
-    # if user is not auth
+    if request.method == "POST":
+        email = request.form["email"]
+        password = request.form["password"]
+        print(email, password)
+        if auth_manager.register(email, password):
+            flash("Account created for {}".format(email), "success")
+            return redirect(url_for("login"))
+        else:
+            flash("An error occured", "danger")
     return render_template("signup.html")
 
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    # if user auth
-    # if user is not auth
+    if request.method == "POST":
+        email = request.form["email"]
+        password = request.form["password"]
+        print(email, password)
+        user = User.query.filter_by(email=email).first()
+        if user and auth_manager.login(password, user.password):
+            login_user(user)
+            return redirect(url_for("home"))
+        else:
+            flash(
+                "Login Unsuccessful. Please check email and password", "danger"
+            )
     return render_template("login.html")
 
 
 @app.route("/logout")
+@login_required
 def logout():
-    # logout user
-
-    # redirect to index
-    return redirect(url_for("/"))
+    logout_user()
+    return redirect(url_for("index"))
