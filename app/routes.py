@@ -24,6 +24,7 @@ def signup():
     if request.method == "POST":
         email = request.form["email"]
         password = request.form["password"]
+        print(email, password)
         if auth_manager.register(email, password):
             flash("Account created for {}".format(email), "success")
             return redirect(url_for("login"))
@@ -37,6 +38,7 @@ def login():
     if request.method == "POST":
         email = request.form["email"]
         password = request.form["password"]
+        print(email, password)
         user = User.query.filter_by(email=email).first()
         if user and auth_manager.login(password, user.password):
             login_user(user)

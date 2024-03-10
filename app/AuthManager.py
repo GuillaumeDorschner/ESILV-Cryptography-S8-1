@@ -74,6 +74,7 @@ class AuthManager:
             )
             self.db.session.add(user)
             self.db.session.commit()
+            print("User added")
             return True
         except Exception as e:
             return False
@@ -111,6 +112,7 @@ class AuthManager:
                 decrypted_hash = self.decrypt_password(user.password)
                 if self.password_hasher.verify(decrypted_hash, password):
                     login_user(user)
+                    print("User logged in")
                     return user
                 else:
                     return None

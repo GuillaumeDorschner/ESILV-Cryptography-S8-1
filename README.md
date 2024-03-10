@@ -20,7 +20,7 @@ If you are using any cryptographic encryption implementation, you need to use [g
 All the code is written in Python, and we will be using the following libraries:
 - [Flask](https://flask.palletsprojects.com/en/3.0.x/)
 - [PostgreSQL database](https://www.postgresql.org/)
-- [Flask-Session](https://flask-session.readthedocs.io/en/latest/)
+- [Flask-Login](https://flask-login.readthedocs.io/en/latest/)
 - [Argon2](https://en.wikipedia.org/wiki/Argon2)
 - [Google Tink](https://developers.google.com/tink) for all cryptographic operations.
 
@@ -29,7 +29,7 @@ graph LR
     Front[Flask Frontend] <--> Server
     Database[Postgres Database] <--> Server
     Server[Flask Backend] --> Postgres[PostgreSQL database]
-    Server[Flask Backend] --> Flask-Session[Flask-Session]
+    Server[Flask Backend] --> Flask-Login[Flask-Login]
     Server[Flask Backend] --> Argon2[Argon2]
     Server[Flask Backend] --> Tink[Google Tink]
 ```

@@ -8,6 +8,7 @@ from flask_login import (
 )
 from flask_sqlalchemy import SQLAlchemy
 
+from .database import db
 from .models import User
 
 app = Flask(__name__)
