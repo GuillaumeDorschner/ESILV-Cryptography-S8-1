@@ -15,6 +15,18 @@ Requirement for the implementation: password storage. Think about it as you are 
 
 If you are using any cryptographic encryption implementation, you need to use [google tink library](https://developers.google.com/tink) (except for the hash functions). Implementation using other libraries does not count.
 
+# Getting Started
+
+## Installation
+
+We use docker to run the application for simplicity. You can install docker from [here](https://docs.docker.com/get-docker/).
+
+Change the example.env to .env and fill in the environment variables. Then run the following command to start the application:
+
+```bash
+docker-compose up
+```
+
 # What we will be using
 
 All the code is written in Python, and we will be using the following libraries:
