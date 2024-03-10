@@ -27,7 +27,7 @@ def signup():
         print(email, password)
         if auth_manager.register(email, password):
             flash("Account created for {}".format(email), "success")
-            return redirect(url_for("login"))
+            return redirect(url_for("home"))
         else:
             flash("An error occured", "danger")
     return render_template("signup.html")
