@@ -1,3 +1,6 @@
+import random
+import time
+
 import tink
 from argon2 import PasswordHasher
 from flask_login import login_user
@@ -107,6 +110,9 @@ class AuthManager:
             User object on success, None otherwise.
         """
         try:
+            time.sleep(
+                random.randint(1, 9) * 0.01
+            )  # sleep against timing attacks and bruteforce
             user = self.db.query.filter_by(email=email).first()
             if user:
                 decrypted_hash = self.decrypt_password(user.password)
