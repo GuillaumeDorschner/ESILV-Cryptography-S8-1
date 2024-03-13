@@ -6,4 +6,5 @@ from .database import db
 class Users(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
-    password = db.Column(db.String(300))  # password: hachage + salt + cryptage
+    # warning we had a lot of trouble with the password field
+    password = db.Column(db.LargeBinary)  # password: hachage + salt + cryptage
