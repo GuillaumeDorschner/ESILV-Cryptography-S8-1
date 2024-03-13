@@ -1,6 +1,10 @@
 # Created by https://www.toptal.com/developers/gitignore/api/flask,macos,linux
 # Edit at https://www.toptal.com/developers/gitignore?templates=flask,macos,linux
 
+# our keyset file
+my_keyset.json
+
+
 ### Flask ###
 instance/*
 !instance/.gitignore
