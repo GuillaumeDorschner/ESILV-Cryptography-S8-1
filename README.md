@@ -22,7 +22,7 @@ If you are using any cryptographic encryption implementation, you need to use [g
 We use docker to run the application for simplicity. You can install docker from [here](https://docs.docker.com/get-docker/).
 
 1. Download docker on your computer
-2. Download the [release](https://github.com/GuillaumeDorschner/ESILV-Cryptography-S8/releases/latest) of the project
+2. Download the [Docker release](https://github.com/GuillaumeDorschner/ESILV-Cryptography-S8/releases/download/v1.0.0/Docker.Getting.Started.zip) of the project
 3. Change the example.env to .env and fill in the environment variables. Then run the following command to start the application:
 
 ```bash
