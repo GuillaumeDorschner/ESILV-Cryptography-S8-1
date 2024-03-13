@@ -11,9 +11,15 @@
 
 # Project Implementation
 
+1. First part of the project is the following:
+
 Requirement for the implementation: password storage. Think about it as you are building some application that has user system (username and password) and you need to store the password securely. You should implement your solution, taking into accounts all the attack scenarios we have discussed. Basically the grade will be scored according to how secure your implementation is. The implementation needs to be runnable, where I can enter my username and password for registration and logging in (the interface can be a web app, or terminal etc).
 
 If you are using any cryptographic encryption implementation, you need to use [google tink library](https://developers.google.com/tink) (except for the hash functions). Implementation using other libraries does not count.
+
+2. Second part of the project is the following:
+
+
 
 # Getting Started
 
@@ -48,7 +54,11 @@ graph LR
     Server[Flask Backend] --> Tink[Google Tink]
 ```
 
-Example of Sequence Diagram:
+# Diagrams and Explanations
+
+Example of Sequence Diagram.
+
+## First part of the project
 
 1. Sign up
 ```mermaid
@@ -70,3 +80,5 @@ sequenceDiagram
     Server-->>Database: Generate a session token
     Server-->>User: Welcome Bob | send the session token
 ```
+
+## Second part of the project
