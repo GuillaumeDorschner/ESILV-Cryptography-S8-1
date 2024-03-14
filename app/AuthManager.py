@@ -1,3 +1,5 @@
+import base64
+import os
 import random
 import time
 
@@ -8,15 +10,16 @@ from tink import daead
 
 from .models import Users
 
+KEYSET_FILENAME = "my_keyset.json"
+
 
 def _init_tink():
     try:
         daead.register()
-        keyset_handle = tink.new_keyset_handle(
-            daead.deterministic_aead_key_templates.AES256_SIV
-        )
+        keyset_handle = tink.new_keyset_handle(daead.deterministic_aead_key_templates.AES256_SIV)
         return keyset_handle
     except Exception as e:
+        print(e)
         Exception("Error while initializing Tink")
 
 
@@ -27,6 +30,7 @@ class AuthManager:
             self.password_hasher = PasswordHasher()
             self.tink_keyset_handle = _init_tink()
         except Exception as e:
+            print(e)
             Exception("Error while initializing AuthManager")
 
     def hash_password(self, password):
@@ -48,14 +52,11 @@ class AuthManager:
             hashed_password: str
         """
         try:
-            daead_primitive = self.tink_keyset_handle.primitive(
-                daead.DeterministicAead
-            )
-            encrypted_hash = daead_primitive.encrypt_deterministically(
-                hashed_password.encode(), b""
-            )
+            daead_primitive = self.tink_keyset_handle.primitive(daead.DeterministicAead)
+            encrypted_hash = daead_primitive.encrypt_deterministically(hashed_password.encode(), b"")
             return encrypted_hash
         except Exception as e:
+            print(e)
             Exception("Error while encrypting password")
 
     def register(self, email, password):
@@ -78,6 +79,7 @@ class AuthManager:
             self.db.session.commit()
             return True
         except Exception as e:
+            print(e)
             Exception("Error while registering user")
 
     def decrypt_password(self, encrypted_hash):
@@ -87,12 +89,8 @@ class AuthManager:
             encrypted_hash: str
         """
         try:
-            daead_primitive = self.tink_keyset_handle.primitive(
-                daead.DeterministicAead
-            )
-            decrypted_hash = daead_primitive.decrypt_deterministically(
-                encrypted_hash, b""
-            )
+            daead_primitive = self.tink_keyset_handle.primitive(daead.DeterministicAead)
+            decrypted_hash = daead_primitive.decrypt_deterministically(encrypted_hash, b"")
             return decrypted_hash.decode()
         except Exception as e:
             print(e)
@@ -116,4 +114,5 @@ class AuthManager:
                     return user
             return None
         except Exception as e:
+            print(e)
             return None
