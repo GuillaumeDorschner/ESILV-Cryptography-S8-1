@@ -10,17 +10,63 @@ from tink import daead
 
 from .models import Users
 
-KEYSET_FILENAME = "my_keyset.json"
 
+class TinkKeyManager:
+    def __init__(self):
+        try:
+            KEYSET_FILENAME = os.getenv("PATH_KEYSET", "my_keyset.json")
+            # if os.path.exists(KEYSET_FILENAME):
+            #     self.tink_keyset_handle = TinkKeyManager.load_keyset(KEYSET_FILENAME)
+            # else:
+            self.tink_keyset_handle = self.create_keyset()
+            # TinkKeyManager.save_keyset(self.tink_keyset_handle, KEYSET_FILENAME)
+        except Exception as e:
+            print(e)
+            raise Exception("Error while initializing TinkKeyManager")
 
-def _init_tink():
-    try:
-        daead.register()
-        keyset_handle = tink.new_keyset_handle(daead.deterministic_aead_key_templates.AES256_SIV)
-        return keyset_handle
-    except Exception as e:
-        print(e)
-        Exception("Error while initializing Tink")
+    def load_keyset(self, filename):
+        """
+        Load the keyset from a file.
+        Args:
+            filename: str
+        """
+        try:
+            with open(filename, "rb") as keyset_file:
+                keyset_bytes = keyset_file.read()
+                keyset_handle = tink.read_keyset_handle(keyset_bytes)
+            return keyset_handle
+        except Exception as e:
+            print(e)
+            raise Exception("Error loading keyset from file")
+
+    def save_keyset(self, keyset_handle, filename):
+        """
+        Save the keyset to a file.
+        Args:
+            keyset_handle: tink.KeysetHandle
+            filename: str
+        """
+        try:
+            keyset_bytes = tink.new_keyset_handle().write()
+            with open(filename, "wb") as keyset_file:
+                keyset_file.write(keyset_bytes)
+        except Exception as e:
+            print(e)
+            raise Exception("Error saving keyset to file")
+
+    def create_keyset(self):
+        """
+        Create a new keyset.
+        Returns:
+            tink.KeysetHandle
+        """
+        try:
+            daead.register()
+            keyset_handle = tink.new_keyset_handle(daead.deterministic_aead_key_templates.AES256_SIV)
+            return keyset_handle
+        except Exception as e:
+            print(e)
+            raise Exception("Error while creating keyset")
 
 
 class AuthManager:
@@ -28,10 +74,11 @@ class AuthManager:
         try:
             self.db = db
             self.password_hasher = PasswordHasher()
-            self.tink_keyset_handle = _init_tink()
+            tink_key_manager = TinkKeyManager()
+            self.tink_keyset_handle = tink_key_manager.tink_keyset_handle
         except Exception as e:
             print(e)
-            Exception("Error while initializing AuthManager")
+            raise Exception("Error while initializing AuthManager")
 
     def hash_password(self, password):
         """
