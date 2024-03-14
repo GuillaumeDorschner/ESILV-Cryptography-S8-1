@@ -1,3 +1,4 @@
+import base64
 import os
 import random
 import time
@@ -18,6 +19,7 @@ def _init_tink():
         keyset_handle = tink.new_keyset_handle(daead.deterministic_aead_key_templates.AES256_SIV)
         return keyset_handle
     except Exception as e:
+        print(e)
         Exception("Error while initializing Tink")
 
     # try:
@@ -66,9 +68,9 @@ class AuthManager:
         try:
             daead_primitive = self.tink_keyset_handle.primitive(daead.DeterministicAead)
             encrypted_hash = daead_primitive.encrypt_deterministically(hashed_password.encode(), b"")
-            print(encrypted_hash)
             return encrypted_hash
         except Exception as e:
+            print(e)
             Exception("Error while encrypting password")
 
     def register(self, email, password):
@@ -91,6 +93,7 @@ class AuthManager:
             self.db.session.commit()
             return True
         except Exception as e:
+            print(e)
             Exception("Error while registering user")
 
     def decrypt_password(self, encrypted_hash):
@@ -100,7 +103,6 @@ class AuthManager:
             encrypted_hash: str
         """
         try:
-            print(encrypted_hash)
             daead_primitive = self.tink_keyset_handle.primitive(daead.DeterministicAead)
             decrypted_hash = daead_primitive.decrypt_deterministically(encrypted_hash, b"")
             return decrypted_hash.decode()
@@ -126,4 +128,5 @@ class AuthManager:
                     return user
             return None
         except Exception as e:
+            print(e)
             return None
