@@ -1,3 +1,4 @@
+import base64
 import os
 import random
 import time
@@ -5,7 +6,7 @@ import time
 import tink
 from argon2 import PasswordHasher
 from flask_login import login_user
-from tink import KeysetHandle, daead
+from tink import daead
 
 from .models import Users
 
@@ -18,22 +19,8 @@ def _init_tink():
         keyset_handle = tink.new_keyset_handle(daead.deterministic_aead_key_templates.AES256_SIV)
         return keyset_handle
     except Exception as e:
+        print(e)
         Exception("Error while initializing Tink")
-
-    # try:
-    #     daead.register()
-
-    #     if os.path.exists(KEYSET_FILENAME) and os.path.getsize(KEYSET_FILENAME) > 0:
-    #         with open(KEYSET_FILENAME, "rt") as keyset_file:
-    #             keyset_handle = tink.KeysetHandle.read(tink.JsonKeysetReader(keyset_file.read()))
-    #     else:
-    #         keyset_handle = tink.new_keyset_handle(daead.deterministic_aead_key_templates.AES256_SIV)
-    #         with open(KEYSET_FILENAME, "wt") as keyset_file:
-    #             keyset_handle.write(tink.JsonKeysetWriter(keyset_file))
-
-    #     return keyset_handle
-    # except Exception as e:
-    #     raise Exception("Error while initializing Tink") from e
 
 
 class AuthManager:
@@ -43,6 +30,7 @@ class AuthManager:
             self.password_hasher = PasswordHasher()
             self.tink_keyset_handle = _init_tink()
         except Exception as e:
+            print(e)
             Exception("Error while initializing AuthManager")
 
     def hash_password(self, password):
@@ -66,9 +54,9 @@ class AuthManager:
         try:
             daead_primitive = self.tink_keyset_handle.primitive(daead.DeterministicAead)
             encrypted_hash = daead_primitive.encrypt_deterministically(hashed_password.encode(), b"")
-            print(encrypted_hash)
             return encrypted_hash
         except Exception as e:
+            print(e)
             Exception("Error while encrypting password")
 
     def register(self, email, password):
@@ -91,6 +79,7 @@ class AuthManager:
             self.db.session.commit()
             return True
         except Exception as e:
+            print(e)
             Exception("Error while registering user")
 
     def decrypt_password(self, encrypted_hash):
@@ -100,7 +89,6 @@ class AuthManager:
             encrypted_hash: str
         """
         try:
-            print(encrypted_hash)
             daead_primitive = self.tink_keyset_handle.primitive(daead.DeterministicAead)
             decrypted_hash = daead_primitive.decrypt_deterministically(encrypted_hash, b"")
             return decrypted_hash.decode()
@@ -126,4 +114,5 @@ class AuthManager:
                     return user
             return None
         except Exception as e:
+            print(e)
             return None
