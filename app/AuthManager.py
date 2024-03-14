@@ -6,7 +6,7 @@ import time
 import tink
 from argon2 import PasswordHasher
 from flask_login import login_user
-from tink import KeysetHandle, daead
+from tink import daead
 
 from .models import Users
 
@@ -22,21 +22,6 @@ def _init_tink():
         print(e)
         Exception("Error while initializing Tink")
 
-    # try:
-    #     daead.register()
-
-    #     if os.path.exists(KEYSET_FILENAME) and os.path.getsize(KEYSET_FILENAME) > 0:
-    #         with open(KEYSET_FILENAME, "rt") as keyset_file:
-    #             keyset_handle = tink.KeysetHandle.read(tink.JsonKeysetReader(keyset_file.read()))
-    #     else:
-    #         keyset_handle = tink.new_keyset_handle(daead.deterministic_aead_key_templates.AES256_SIV)
-    #         with open(KEYSET_FILENAME, "wt") as keyset_file:
-    #             keyset_handle.write(tink.JsonKeysetWriter(keyset_file))
-
-    #     return keyset_handle
-    # except Exception as e:
-    #     raise Exception("Error while initializing Tink") from e
-
 
 class AuthManager:
     def __init__(self, db):
@@ -45,6 +30,7 @@ class AuthManager:
             self.password_hasher = PasswordHasher()
             self.tink_keyset_handle = _init_tink()
         except Exception as e:
+            print(e)
             Exception("Error while initializing AuthManager")
 
     def hash_password(self, password):

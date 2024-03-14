@@ -43,9 +43,7 @@ def login():
             login_user(user)
             return redirect("/home")
         else:
-            flash(
-                "Login Unsuccessful. Please check email and password", "danger"
-            )
+            flash("Login Unsuccessful. Please check email and password", "danger")
     return render_template("login.html")
 
 
@@ -53,4 +51,4 @@ def login():
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for("index"))
+    return redirect(url_for("login"))
