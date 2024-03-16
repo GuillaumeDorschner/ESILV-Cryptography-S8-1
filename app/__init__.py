@@ -1,13 +1,7 @@
 import os
 
 from flask import Flask
-from flask_login import (
-    LoginManager,
-    current_user,
-    login_required,
-    login_user,
-    logout_user,
-)
+from flask_login import LoginManager, current_user, login_required, login_user, logout_user
 
 from .database import db
 from .models import Users
@@ -32,8 +26,11 @@ def load_user(user_id):
     return Users.query.get(int(user_id))
 
 
-with app.app_context():
-    db.create_all()
+try:
+    with app.app_context():
+        db.create_all()
+except Exception as e:
+    Exception("Error with database: \n 1. Check if the database is running \n 2. Check if the ENV database URL is correct")
 
 # Import your application's routes
 from . import routes
