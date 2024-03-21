@@ -1,7 +1,4 @@
-import base64
 import os
-import random
-import time
 
 import tink
 from argon2 import PasswordHasher
@@ -69,8 +66,26 @@ class TinkKeyManager:
             raise Exception("Error while creating keyset")
 
 
+class PakeManager:
+    def __init__(self):
+        try:
+            pass
+        except Exception as e:
+            print(e)
+            raise Exception("Error while initializing PakeManager")
+
+
 class AuthManager:
-    def __init__(self, db):
+    def __init__(self, db: object):
+        """
+        Initializes the AuthManager object.
+
+        Args:
+            db: The database object used for authentication.
+
+        Raises:
+            Exception: If there is an error while initializing AuthManager.
+        """
         try:
             self.db = db
             self.password_hasher = PasswordHasher()
@@ -89,7 +104,7 @@ class AuthManager:
         # No need to store the salt in DB, it is already included in the hash
         try:
             return self.password_hasher.hash(password)
-        except Exception as e:
+        except Exception:
             Exception("Error while hashing password")
 
     def encrypt_password(self, hashed_password):
