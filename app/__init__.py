@@ -1,12 +1,16 @@
 import os
 
 from flask import Flask
+
+from .routes import site
+
 from flask_login import LoginManager
 
 from .database import db
 from .models import Users
 
 app = Flask(__name__)
+app.register_blueprint(site, url_prefix="/")
 
 # Configuration
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "default-secret-key")
@@ -17,7 +21,7 @@ app.config["SQLALCHEMY_ECHO"] = True
 db.init_app(app)
 
 login_manager = LoginManager(app)
-login_manager.login_view = "login"
+login_manager.login_view = "simple_page.login"
 login_manager.login_message_category = "info"
 
 
