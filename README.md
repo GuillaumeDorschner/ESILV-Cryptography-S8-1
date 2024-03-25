@@ -24,6 +24,17 @@ If you are using any cryptographic encryption implementation, you need to use [g
 
 ## Installation
 
+> [!WARNING]
+> For running the project locally in an easier-to-debug manner, follow the order below. In the future, we will use Docker-compose for project execution. Respect the following order:
+> 1. docker compose up
+>    ```bash
+>     docker-compose up
+>     ```
+> 2. terminal 2
+>    ```bash
+>     flask run --host=0.0.0.0 --port=80
+>     ```
+
 We use docker to run the application for simplicity. You can install docker from [here](https://docs.docker.com/get-docker/).
 
 1. Download docker on your computer
