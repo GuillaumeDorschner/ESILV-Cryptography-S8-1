@@ -28,7 +28,7 @@ If you are using any cryptographic encryption implementation, you need to use [g
 > For running the project locally in an easier-to-debug manner, follow the order below. In the future, we will use Docker-compose for project execution. Respect the following order:
 > 1. docker compose up
 >    ```bash
->     docker-compose up
+>     docker compose up
 >     ```
 > 2. terminal 2
 >    ```bash
@@ -67,8 +67,6 @@ graph LR
 # Diagrams and Explanations
 
 Example of Sequence Diagram.
-
-### First part of the project: Password storage
 
 ```mermaid
     sequenceDiagram
